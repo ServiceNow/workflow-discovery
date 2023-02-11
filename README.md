@@ -1,6 +1,6 @@
 # Workflow Discovery from Dialogues in the Low Data Regime
 
-This code base the training code and dataset generation for "Workflow Discovery from Dialogues in the Low Data Regime"
+This code base the training code and dataset generation for ["Workflow Discovery from Dialogues in the Low Data Regime"](https://openreview.net/forum?id=L9othQvPks) accepted at TMLR.
 
 The code base relies on the huggingface transformer library.
 
