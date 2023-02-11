@@ -4,12 +4,15 @@ This code base the training code and dataset generation for ["Workflow Discovery
 
 The code base relies on the huggingface transformer library.
 
-# Data
+## Data
+
 In this work we use two dataset ABCD (Chen et al., 2021) and MultiWOZ 2.2 (Zang et al., 2020).
 
 ### Create folder Structure
+
 Create a following folder structure to contain all the data
-```
+
+```txt
 <Project Directory>/
 └── data/
     ├── raw 
@@ -22,6 +25,7 @@ mkdir -p data/processed
 ```
 
 ### Copy Action Mapping files
+
 In this work we use a mapping for the action names to convert them to a human written names (e.g., "pull up customer account" instead of "pull-up-account").
 This code base includes the mapping that were use for all the experiments in our work for both datasets.
 
@@ -30,9 +34,8 @@ cp ${Clone_Directory}/resources/abcd_action_mappings.json data/raw
 cp ${Clone_Directory}/resources/multiwoz_action_mappings.json data/raw
 ```
 
-
-
 ### Download ABCD Dataset 
+
 Since ABCD is not on huggingface datasets, we need to download it manually:
 
 ```shell
@@ -54,7 +57,8 @@ python generated_datasets.py --raw_data_folder ./data/raw --processed_data_folde
 ```
 
 Once the script above runs successfully, you should see the following files in the processed data folder
-```
+
+```txt
 <Project Directory>/
 └── data/
     └── processed 
@@ -72,9 +76,10 @@ Once the script above runs successfully, you should see the following files in t
        └── test_workflow_discovery_multiwoz.json 
 ```
 
-# Training
+## Training
 
-### Set up you environment:
+### Set up you environment
+
 ```shell
 # Enable you virtual env
 pip install -r requirements.txt
@@ -113,16 +118,19 @@ python train.py --experiment_name my_wd_experiment \
 ```
 
 In other to fine-tune the model a different task, one only need to change the dataset path and the ``--source_prefix`` parameter as follows:
+
 ### Workflow Discovery Task on ABCD
-```
+
+```sh
 --train_file ./data/processed/train_workflow_discovery_abcd.json \
 --validation_file ./data/processed/dev_workflow_discovery_abcd.json \
 --test_file ./data/processed/dev_workflow_discovery_abcd.json \
 --source_prefix 'Extract workflow : ' 
 ```
 
-### Workflow Discovery Task on MultiWoz 
-```
+### Workflow Discovery Task on MultiWoz
+
+```sh
 --train_file ./data/processed/train_workflow_discovery_multiwoz.json \
 --validation_file ./data/processed/dev_workflow_discovery_multiwoz.json \
 --test_file ./data/processed/test_workflow_discovery_multiwoz.json \
@@ -130,7 +138,8 @@ In other to fine-tune the model a different task, one only need to change the da
 ```
 
 ### AST
-```
+
+```sh
 --train_file ./data/processed/train_AST_abcd.json \
 --validation_file ./data/processed/dev_AST_abcd.json \
 --test_file ./data/processed/test_workflow_AST_abcd.json \
@@ -139,7 +148,8 @@ In other to fine-tune the model a different task, one only need to change the da
 ```
 
 ### CDS
-```
+
+```sh
 --train_file ./data/processed/train_CDS_abcd.json \
 --validation_file ./data/processed/dev_CDS_abcd.json \
 --test_file ./data/processed/test_CDS_abcd.json \
@@ -147,10 +157,10 @@ In other to fine-tune the model a different task, one only need to change the da
 --use_cds_metrics
 ```
 
-### Notes: 
+### Notes
+
 - When using BART models, you will need to add `--label_smoothing_factor 0.1`
 - You can use the `--no_metrics` flag to disable metric calculation.
 - You can use the `--use_bert_score` flag to enable bert score during evaluation.
 - To use our conditioning mechanism, use `--text_column input_w_possible_actions` or `--text_column input_w_possible_actions_plus`
-- In the metrics, EM_action_only and CE_action_only refer to EM* and CE* respectively in the paper. 
 - We use the huggingface trainer, so this code support any standard command line that you can check with `python train.py -h`
