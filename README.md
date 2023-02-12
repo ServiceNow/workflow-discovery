@@ -24,17 +24,7 @@ mkdir -p data/raw
 mkdir -p data/processed
 ```
 
-### Copy Action Mapping files
-
-In this work we use a mapping for the action names to convert them to a human written names (e.g., "pull up customer account" instead of "pull-up-account").
-This code base includes the mapping that were use for all the experiments in our work for both datasets.
-
-```shell
-cp ${Clone_Directory}/resources/abcd_action_mappings.json data/raw
-cp ${Clone_Directory}/resources/multiwoz_action_mappings.json data/raw
-```
-
-### Download ABCD Dataset 
+### Download ABCD Dataset
 
 Since ABCD is not on huggingface datasets, we need to download it manually:
 
@@ -43,6 +33,7 @@ cd data/raw
 wget https://github.com/asappresearch/abcd/raw/master/data/abcd_v1.1.json.gz
 wget https://raw.githubusercontent.com/asappresearch/abcd/master/data/guidelines.json
 wget https://raw.githubusercontent.com/asappresearch/abcd/master/data/ontology.json
+wget https://raw.githubusercontent.com/asappresearch/abcd/master/data/utterances.json
 wget https://raw.githubusercontent.com/asappresearch/abcd/master/data/utterances.json
 gunzip abcd_v1.1.json.gz
 ```
@@ -53,7 +44,7 @@ gunzip abcd_v1.1.json.gz
 # Enable you virtual env
 pip install -r requirements.txt
 
-python generated_datasets.py --raw_data_folder ./data/raw --processed_data_folder ./data/processed 
+python generate_datasets.py --raw_data_folder ./data/raw --processed_data_folder ./data/processed 
 ```
 
 Once the script above runs successfully, you should see the following files in the processed data folder
@@ -62,23 +53,28 @@ Once the script above runs successfully, you should see the following files in t
 <Project Directory>/
 └── data/
     └── processed 
-       ├── train_workflow_discovery_abcd.json 
-       ├── dev_workflow_discovery_abcd.json 
-       ├── test_workflow_discovery_abcd.json 
-       ├── train_AST_abcd.json 
-       ├── dev_AST_abcd.json 
-       ├── test_AST_abcd.json 
-       ├── train_CDS_abcd.json 
-       ├── dev_CDS_abcd.json 
-       ├── test_CDS_abcd.json 
-       ├── train_workflow_discovery_multiwoz.json 
-       ├── validation_workflow_discovery_multiwoz.json 
-       └── test_workflow_discovery_multiwoz.json 
+           └── workflow_discovery 
+               └── abcd
+                   ├── train.json 
+                   ├── dev.json 
+                   └── test.json 
+               └── multiwoz 
+                   ├── train.json 
+                   ├── dev.json 
+                   └── test.json 
+           ├── action_state_tracking
+               ├── train.json 
+               ├── dev.json 
+               └── test.json 
+           └── cascading_dialogue_sucess 
+               ├── train.json 
+               ├── dev.json 
+               └── test.json 
 ```
 
 ## Training
 
-The training code is based on the hunggingface [examples](https://github.com/huggingface/transformers/blob/main/examples/pytorch/summarization/run_summarization.py).
+The training code is based on the Hunggingface Transformers [examples](https://github.com/huggingface/transformers/blob/main/examples/pytorch/summarization/run_summarization.py).
 
 ### Set up you environment
 
