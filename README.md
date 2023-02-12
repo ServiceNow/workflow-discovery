@@ -2,7 +2,7 @@
 
 Code base for ["Workflow Discovery from Dialogues in the Low Data Regime"](https://openreview.net/forum?id=L9othQvPks) accepted at TMLR.
 
-We have created a leaderboard for the Workflow Disovery task on Paper with Code [here](https://paperswithcode.com/task/workflow-discovery).
+We have created a **leaderboard** for the Workflow Disovery task on Paper with Code [here](https://paperswithcode.com/task/workflow-discovery).
 
 ## Data
 
