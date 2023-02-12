@@ -1,11 +1,19 @@
 """All processing functions are adapted from https://github.com/asappresearch/abcd/blob/master/utils/process.py
 for fair comparison for the AST and CDS tasks.
 """
+import gzip
+import shutil
 import json
+import logging
+from urllib.request import urlretrieve
 from pathlib import Path
 from typing import List, Dict
 
-from tqdm import tqdm as progress_bar
+from tqdm import tqdm 
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 def prepare_action_labels(ontology):
     action_list = []
@@ -197,7 +205,7 @@ def parse_abcd_dataset_for_cds(raw_dat_path: Path, data: List):
 
     parsed_samples = []
 
-    for sample in progress_bar(data, total=len(data)):
+    for sample in tqdm(data, total=len(data)):
         so_far = []
         for turn in sample["delexed"]:
             speaker, text = turn["speaker"], turn["text"]
@@ -318,3 +326,31 @@ def get_value_mappings(data_path: Path):
 
     return value_mappings
 
+def unzip_file(zip_file: Path):
+    output_file_path = zip_file.parent / "abcd_v1.1.json"
+
+    with gzip.open(str(zip_file.resolve()), 'rb') as f_in:
+        with open(output_file_path, 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
+        
+def download_abcd_dataset(raw_data_path: Path):
+    """Download the ABCD dataset from the official website"""
+    logger.info(f"Downloading the ABCD dataset to {raw_data_path}")
+    
+    files_to_download = [
+        "https://github.com/asappresearch/abcd/raw/master/data/abcd_v1.1.json.gz",
+        "https://raw.githubusercontent.com/asappresearch/abcd/master/data/guidelines.json",
+        "https://raw.githubusercontent.com/asappresearch/abcd/master/data/ontology.json",
+        "https://raw.githubusercontent.com/asappresearch/abcd/master/data/utterances.json",
+        "https://raw.githubusercontent.com/asappresearch/abcd/master/data/utterances.json",
+    ]
+    
+    for file_to_download in tqdm(files_to_download):
+        output_file_path = raw_data_path / file_to_download.split("/")[-1]
+        urlretrieve(file_to_download, output_file_path) 
+        
+        if file_to_download.endswith(".gz"):
+            unzip_file(output_file_path)
+        
+    logger.info(f"Downloading the ABCD dataset to {raw_data_path}")
+        

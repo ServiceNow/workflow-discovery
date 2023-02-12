@@ -8,28 +8,12 @@ We have created a **leaderboard** for the Workflow Disovery task on Paper with C
 
 In this work we use two dataset ABCD (Chen et al., 2021) and MultiWOZ 2.2 (Zang et al., 2020).
 
-### Create folder Structure
-
-Create a following folder structure to contain all the data
-
-```txt
-<Project Directory>/
-└── data/
-    ├── raw 
-    └── processed 
-```
-
-```shell
-mkdir -p data/raw
-mkdir -p data/processed
-```
-
 ### Download ABCD Dataset
 
 Since ABCD is not on huggingface datasets, we need to download it manually:
 
 ```shell
-cd data/raw
+cd data/raw/abcd
 wget https://github.com/asappresearch/abcd/raw/master/data/abcd_v1.1.json.gz
 wget https://raw.githubusercontent.com/asappresearch/abcd/master/data/guidelines.json
 wget https://raw.githubusercontent.com/asappresearch/abcd/master/data/ontology.json
@@ -44,32 +28,32 @@ gunzip abcd_v1.1.json.gz
 # Enable you virtual env
 pip install -r requirements.txt
 
-python generate_datasets.py --raw_data_folder ./data/raw --processed_data_folder ./data/processed 
+python generate_datasets.py --raw_data_folder ./data/raw --processed_data_folder ./data/processed
 ```
+
+The script above downloads:
+
+- ABCD datasets from [Chen et al., 2021 Official Repo](https://github.com/asappresearch/abcd)
+- MultiWoz from [Huggingface Datasets](https://huggingface.co/datasets/multi_woz_v22)
 
 Once the script above runs successfully, you should see the following files in the processed data folder
 
 ```txt
 <Project Directory>/
-└── data/
-    └── processed 
-           └── workflow_discovery 
-               └── abcd
-                   ├── train.json 
-                   ├── dev.json 
-                   └── test.json 
-               └── multiwoz 
-                   ├── train.json 
-                   ├── dev.json 
-                   └── test.json 
-           ├── action_state_tracking
-               ├── train.json 
-               ├── dev.json 
-               └── test.json 
-           └── cascading_dialogue_sucess 
-               ├── train.json 
-               ├── dev.json 
-               └── test.json 
+data/
+├─ raw/
+├─ processed/
+   ├─ workflow_discovery/
+   │  ├─ abcd/
+   │  │  └──  train/eval/test.json
+   │  └── multiwoz/
+   │    └──  train/eval/test.json
+   ├─ action_state_tracking/
+   │  └── abcd/
+   │     └──  train/eval/test.json
+   └── cascading_dialogue_success/
+      └── abcd/
+          └──  train/eval/test.json
 ```
 
 ## Training
