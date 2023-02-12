@@ -1,8 +1,8 @@
 # Workflow Discovery from Dialogues in the Low Data Regime
 
-This code base the training code and dataset generation for ["Workflow Discovery from Dialogues in the Low Data Regime"](https://openreview.net/forum?id=L9othQvPks) accepted at TMLR.
+Code base for ["Workflow Discovery from Dialogues in the Low Data Regime"](https://openreview.net/forum?id=L9othQvPks) accepted at TMLR.
 
-The code base relies on the huggingface transformer library.
+We have created a leaderboard for the Workflow Disovery task on Paper with Code [here](https://paperswithcode.com/task/workflow-discovery).
 
 ## Data
 
@@ -77,6 +77,8 @@ Once the script above runs successfully, you should see the following files in t
 ```
 
 ## Training
+
+The training code is based on the hunggingface [examples](https://github.com/huggingface/transformers/blob/main/examples/pytorch/summarization/run_summarization.py).
 
 ### Set up you environment
 
